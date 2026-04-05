@@ -1,37 +1,74 @@
-# Juego_clasico_Asteroids
-# Asteroids Arcade Clone - Proyecto de Programación Web
+# Juego de asteroides - Proyecto de Programación Web  
 
-Este proyecto es una recreación en cliente (Browser-side) del clásico juego Asteroids, desarrollado utilizando únicamente HTML5, CSS y JavaScript (Canvas API).
+Este proyecto es una recreación del clásico juego *Asteroids*, desarrollado completamente del lado del cliente (en el navegador) usando HTML5, CSS y JavaScript con la API de Canvas.
 
-## Fases de Desarrollo
+---
 
-### Fase 1: Configuración Base y Renderizado
-En esta primera semana, el objetivo fue establecer el entorno, elegir la tecnología de renderizado y dibujar nuestro primer elemento en pantalla.
+## Fases de Desarrollo  
 
-**Decisión Técnica Principal:** Se optó por utilizar **HTML5 Canvas** en lugar de SVG o Animaciones CSS. Canvas ofrece un rendimiento muy superior para juegos 2D que requieren actualizar docenas de coordenadas en cada fotograma (60 FPS), manteniendo el código lógico, simple y funcional.
+### Fase 1: Configuración Base y Renderizado  
 
-#### Explicación del Código (Paso a Paso)
+En esta primera etapa me enfoqué en preparar todo el entorno, elegir cómo iba a renderizar el juego y lograr dibujar el primer elemento en pantalla.
 
-**1. HTML (`index.html`)**
-La estructura es mínima. Solo creamos un elemento `<canvas>` con el id `gameCanvas`. Este elemento actúa como la pantalla en blanco de nuestra máquina arcade. Al final del `body`, cargamos nuestro script para asegurar que el HTML cargue primero.
+### Decisión Técnica Principal  
+Decidí usar **HTML5 Canvas** en lugar de SVG o animaciones con CSS. La razón es que Canvas tiene mejor rendimiento para juegos 2D donde se tienen que actualizar muchas posiciones constantemente. Además, me permite mantener el código más simple y directo.
 
-**2. CSS (`style.css`)**
-El objetivo aquí fue limpiar la pantalla y centrar el juego:
-* Eliminamos los márgenes por defecto del navegador (`margin: 0`).
-* Establecemos el fondo de la página en negro para dar la sensación de espacio.
-* Usamos *Flexbox* (`display: flex`, `justify-content: center`, `align-items: center`) para que el Canvas quede perfectamente centrado en la pantalla del jugador.
+---
 
-**3. JavaScript (`game.js`)**
-Aquí es donde ocurre la magia. Lo dividimos en partes funcionales:
+## Explicación del Código  
 
-* **Configuración del Contexto:** Usamos `canvas.getContext("2d")`. Esto es crucial, ya que nos da acceso a todas las herramientas de dibujo 2D integradas en JavaScript (para hacer líneas, rellenar formas, etc.).
-* **El Objeto Jugador (`ship`):** En lugar de crear clases complejas desde el día uno, guardamos la información de nuestra nave en un objeto simple. Guardamos su posición (`x`, `y`), su tamaño (`radius`) y hacia dónde apunta (`angle`).
-* **La Función `draw()`:** Esta función dibuja un fotograma estático. 
-  * Primero, pinta todo el canvas de negro (`fillRect`) para borrar el fotograma anterior.
-  * Luego, usa trigonometría básica (`Math.cos` y `Math.sin`) para calcular dónde están las tres esquinas del triángulo de la nave a partir de su punto central, y traza las líneas blancas (`lineTo` y `stroke`).
-* **El Motor / Game Loop:** Usamos `requestAnimationFrame(gameLoop)`. Esta función nativa del navegador le dice a la pantalla: "Justo antes de que refresques la imagen de tu monitor, vuelve a ejecutar el `gameLoop`". Esto crea un ciclo infinito suave que corre a la velocidad del monitor (usualmente 60 fotogramas por segundo), lo cual es perfecto para nuestro juego.
+### 1. HTML (index.html)  
+La estructura es bastante simple. Solo creé un elemento `<canvas>` con el id `gameCanvas`, que básicamente funciona como la pantalla del juego.  
 
-### Próximos Pasos (Fase 2)
-* Implementar rotación de la nave capturando eventos del teclado.
-* Aplicar física de inercia y velocidad para el desplazamiento.
-* (Extra planeado): Estructuración de lógica para incluir un Jefe Final en etapas avanzadas.
+También coloqué el script al final del `<body>` para asegurarme de que todo el HTML cargue antes de ejecutar el JavaScript.
+
+---
+
+### 2. CSS (style.css)  
+Aquí mi objetivo fue limpiar la pantalla y centrar el juego:
+
+- Quité los márgenes por defecto del navegador (`margin: 0`)
+- Puse el fondo negro para dar una sensación de espacio
+- Usé **Flexbox** (`display: flex`, `justify-content: center`, `align-items: center`) para centrar el canvas perfectamente en la pantalla
+
+---
+
+### 3. JavaScript (game.js)  
+
+Aquí es donde realmente empieza lo importante:
+
+#### Configuración del Contexto  
+Uso `canvas.getContext("2d")` para obtener el contexto de dibujo. Esto me permite usar todas las herramientas necesarias para dibujar en 2D (líneas, formas, etc.).
+
+#### Objeto Jugador (ship)  
+En lugar de complicarme desde el inicio con clases, decidí usar un objeto simple para la nave. Ahí guardo:
+
+- Posición (`x`, `y`)
+- Tamaño (`radius`)
+- Ángulo hacia donde apunta (`angle`)
+
+---
+
+#### Función draw()  
+Esta función se encarga de dibujar cada fotograma:
+
+1. Primero limpio la pantalla pintando todo el canvas de negro (`fillRect`)
+2. Luego uso trigonometría (`Math.cos` y `Math.sin`) para calcular las posiciones de las tres puntas del triángulo (la nave)
+3. Finalmente dibujo las líneas con `lineTo` y `stroke`
+
+---
+
+#### Game Loop / Motor del Juego  
+Uso `requestAnimationFrame(gameLoop)`, que básicamente le dice al navegador que ejecute continuamente el bucle del juego justo antes de cada refresco de pantalla.
+
+
+
+---
+
+## Fase 2
+-tbd(To Be Determined)
+
+
+
+
+---
