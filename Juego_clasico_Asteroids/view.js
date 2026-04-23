@@ -53,11 +53,11 @@ export function render(state) {
         ctx.stroke();
     }
 
-    // UI - SCORE Y VIDAS
+    
     ctx.fillStyle = "white";
     ctx.font = "20px Courier New";
     ctx.fillText("SCORE: " + state.score, 20, 30);
-    ctx.fillText("VIDAS: " + state.lives, 20, 60); // <-- MOSTRAMOS LAS VIDAS
+    ctx.fillText("VIDAS: " + state.lives, 20, 60); 
 
     if (state.gameOver) {
         ctx.font = "40px Courier New";
