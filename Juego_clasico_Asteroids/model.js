@@ -146,12 +146,12 @@ export function updatePhysics(keys) {
             let dx = state.ship.x - a.x;
             let dy = state.ship.y - a.y;
             if (Math.sqrt(dx * dx + dy * dy) < state.ship.radius + a.radioBase * 0.8) {
-                state.lives--; // Restar vida
+                state.lives--;
                 
                 if (state.lives <= 0) {
-                    state.gameOver = true; // Si llegas a 0, Game Over
+                    state.gameOver = true; 
                 } else {
-                    // Si quedan vidas, reaparecer en el centro y ser invulnerable por 2 segundos (120 frames)
+                    
                     state.ship.x = state.canvasWidth / 2;
                     state.ship.y = state.canvasHeight / 2;
                     state.ship.velX = 0;
