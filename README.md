@@ -4,71 +4,44 @@ Este proyecto es una recreación del clásico juego *Asteroids*, desarrollado co
 
 ---
 
-## Fases de Desarrollo  
+## Arquitectura del Proyecto
 
-### Fase 1: Configuración Base y Renderizado  
+Para garantizar un código escalable, mantenible y limpio, el motor del juego fue refactorizado utilizando el patrón de diseño **Modelo-Vista-Controlador (MVC)** e implementado mediante **ES6 Modules**.
 
-En esta primera etapa me enfoqué en preparar todo el entorno, elegir cómo iba a renderizar el juego y lograr dibujar el primer elemento en pantalla.
+La estructura del proyecto se divide en los siguientes archivos y responsabilidades:
 
-### Decisión Técnica Principal  
-Decidí usar **HTML5 Canvas** en lugar de SVG o animaciones con CSS. La razón es que Canvas tiene mejor rendimiento para juegos 2D donde se tienen que actualizar muchas posiciones constantemente. Además, me permite mantener el código más simple y directo.
+* **`index.html` (Estructura Base):**
+  Es el punto de entrada de la aplicación. Contiene únicamente la etiqueta `<canvas>` que sirve como pantalla del juego y el enlace crucial al motor principal mediante `<script type="module" src="main.js"></script>`, permitiendo el uso de la arquitectura de módulos.
+* **`style.css` (Presentación del Entorno):**
+  Se encarga exclusivamente del diseño del contenedor (el navegador). Utiliza *Flexbox* para centrar el lienzo del juego en la pantalla, establece el fondo espacial (negro) y define los bordes del área de juego, sin interferir con el renderizado dinámico interno del Canvas.
+* **`model.js` (Modelo - Lógica de Negocio):**
+  Encapsula el estado global del juego (`state`). Se encarga de calcular las físicas (inercia, vectores de velocidad), la trigonometría del movimiento, la detección de colisiones y la generación procedimental de los vértices para las formas irregulares de los asteroides. Es completamente agnóstico a la interfaz gráfica.
+* **`view.js` (Vista - Renderizado):**
+  Su única responsabilidad es renderizar el estado actual del juego. Utiliza la API de `CanvasRenderingContext2D` para dibujar los polígonos, limpiar los fotogramas y actualizar la interfaz de usuario (Score y Game Over) basándose en los datos proporcionados por el Modelo.
+* **`controller.js` (Controlador - Entradas):**
+  Actúa como intermediario gestionando los eventos de entrada del usuario (`keydown`, `keyup`). Captura las interacciones con el teclado y ejecuta las funciones de mutación de estado correspondientes en el Modelo.
+* **`main.js` (Core Loop):**
+  Archivo de orquestación principal. Importa los módulos, inicializa los componentes y ejecuta el `gameLoop` a 60 FPS mediante `requestAnimationFrame()`, sincronizando la actualización de físicas y el renderizado visual.
 
----
+## Características Técnicas Destacadas
 
-## Explicación del Código  
+* **Renderizado Optimizado:** Uso de Canvas en lugar de manipulación directa del DOM o animaciones CSS, logrando un rendimiento fluido de 60 FPS al manejar docenas de entidades simultáneas.
+* **Generación Procedimental:** Los asteroides no son imágenes estáticas ni círculos perfectos. Sus vértices se calculan dinámicamente mediante coordenadas polares y factores de aleatoriedad para crear polígonos irregulares únicos.
+* **Hitboxes Eficientes:** Para optimizar los cálculos de la CPU, la detección de colisiones utiliza un sistema de *hitboxes* circulares (mediante el Teorema de Pitágoras) aunque el renderizado visual sea poligonal complejo.
+* **Físicas Arcade:** Implementación de inercia y fricción para simular el desplazamiento en el vacío del espacio, junto con el clásico efecto de "Screen Wrapping" (reaparecer por el borde opuesto).
 
-### 1. HTML (index.html)  
-La estructura es bastante simple. Solo creé un elemento `<canvas>` con el id `gameCanvas`, que básicamente funciona como la pantalla del juego.  
+## Instrucciones de Ejecución
 
-También coloqué el script al final del `<body>` para asegurarme de que todo el HTML cargue antes de ejecutar el JavaScript.
+Debido a la implementación estricta de ES6 Modules (`import`/`export`), este proyecto **no puede ejecutarse simplemente abriendo el archivo HTML** en el navegador por restricciones de seguridad (CORS). 
 
----
+Para ejecutar el juego en un entorno de desarrollo local:
+1. Abrir el proyecto en un editor de código como Visual Studio Code.
+2. Iniciar un servidor local (por ejemplo, utilizando la extensión **Live Server**).
+3. Acceder a la URL local generada (usualmente `http://127.0.0.1:5500/index.html`).
 
-### 2. CSS (style.css)  
-Aquí mi objetivo fue limpiar la pantalla y centrar el juego:
-
-- Quité los márgenes por defecto del navegador (`margin: 0`)
-- Puse el fondo negro para dar una sensación de espacio
-- Usé **Flexbox** (`display: flex`, `justify-content: center`, `align-items: center`) para centrar el canvas perfectamente en la pantalla
-
----
-
-### 3. JavaScript (game.js)  
-
-Aquí es donde realmente empieza lo importante:
-
-#### Configuración del Contexto  
-Uso `canvas.getContext("2d")` para obtener el contexto de dibujo. Esto me permite usar todas las herramientas necesarias para dibujar en 2D (líneas, formas, etc.).
-
-#### Objeto Jugador (ship)  
-En lugar de complicarme desde el inicio con clases, decidí usar un objeto simple para la nave. Ahí guardo:
-
-- Posición (`x`, `y`)
-- Tamaño (`radius`)
-- Ángulo hacia donde apunta (`angle`)
-
----
-
-#### Función draw()  
-Esta función se encarga de dibujar cada fotograma:
-
-1. Primero limpio la pantalla pintando todo el canvas de negro (`fillRect`)
-2. Luego uso trigonometría (`Math.cos` y `Math.sin`) para calcular las posiciones de las tres puntas del triángulo (la nave)
-3. Finalmente dibujo las líneas con `lineTo` y `stroke`
-
----
-
-#### Game Loop / Motor del Juego  
-Uso `requestAnimationFrame(gameLoop)`, que básicamente le dice al navegador que ejecute continuamente el bucle del juego justo antes de cada refresco de pantalla.
-
-
-
----
-
-## Fase 2
--tbd(To Be Determined)
-
-
-
-
----
+## Controles
+* **Flecha Izquierda / Derecha:** Rotar la nave.
+* **Flecha Arriba:** Acelerar (Thrust).
+* **Barra Espaciadora:** Disparar.
+* **Enter:** Reiniciar partida (en pantalla de Game Over).
+## OJALA TODO EL QUE JUEGUE SE DIVIERTA CON EL JUEGO
