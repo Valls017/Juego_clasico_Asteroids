@@ -1,12 +1,12 @@
 export const state = {
     canvasWidth: 800,
     canvasHeight: 600,
-    // Añadimos 'invulnerable' a la nave
+    
     ship: { x: 400, y: 300, radius: 15, angle: Math.PI / 2, velX: 0, velY: 0, invulnerable: 0 },
     bullets: [],
     asteroids: [],
     score: 0,
-    lives: 3, // <-- NUESTRO CONTADOR DE VIDAS
+    lives: 3, 
     gameOver: false
 };
 
@@ -60,7 +60,7 @@ export function resetGame() {
     state.ship = { x: state.canvasWidth / 2, y: state.canvasHeight / 2, radius: 15, angle: Math.PI / 2, velX: 0, velY: 0, invulnerable: 0 };
     state.bullets = [];
     state.score = 0;
-    state.lives = 3; // <-- REINICIAMOS LAS VIDAS A 3
+    state.lives = 3;
     state.gameOver = false;
     createAsteroids();
 }
