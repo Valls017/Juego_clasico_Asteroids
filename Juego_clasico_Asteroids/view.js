@@ -10,7 +10,7 @@ export function render(state) {
 
     
     if (!state.gameOver) {
-        // Solo dibuja la nave si no es invulnerable, o si está en un ciclo de parpadeo
+        
         if (state.ship.invulnerable === 0 || state.ship.invulnerable % 10 < 5) {
             ctx.strokeStyle = "white";
             ctx.lineWidth = 2;
