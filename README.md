@@ -8,13 +8,17 @@ Este proyecto es una recreación del clásico juego *Asteroids*, desarrollado co
 
 Para garantizar un código escalable, mantenible y limpio, el motor del juego fue refactorizado utilizando el patrón de diseño **Modelo-Vista-Controlador (MVC)** e implementado mediante **ES6 Modules**.
 
-La estructura del proyecto se divide en las siguientes responsabilidades:
+La estructura del proyecto se divide en los siguientes archivos y responsabilidades:
 
-* **`model.js` (Modelo):**
-  Encapsula el estado global del juego (`state`) y la lógica de negocio. Se encarga de calcular las físicas (inercia, vectores de velocidad), la trigonometría del movimiento, la detección de colisiones y la generación procedimental de los vértices para las formas irregulares de los asteroides. Es completamente agnóstico a la interfaz gráfica.
-* **`view.js` (Vista):**
+* **`index.html` (Estructura Base):**
+  Es el punto de entrada de la aplicación. Contiene únicamente la etiqueta `<canvas>` que sirve como pantalla del juego y el enlace crucial al motor principal mediante `<script type="module" src="main.js"></script>`, permitiendo el uso de la arquitectura de módulos.
+* **`style.css` (Presentación del Entorno):**
+  Se encarga exclusivamente del diseño del contenedor (el navegador). Utiliza *Flexbox* para centrar el lienzo del juego en la pantalla, establece el fondo espacial (negro) y define los bordes del área de juego, sin interferir con el renderizado dinámico interno del Canvas.
+* **`model.js` (Modelo - Lógica de Negocio):**
+  Encapsula el estado global del juego (`state`). Se encarga de calcular las físicas (inercia, vectores de velocidad), la trigonometría del movimiento, la detección de colisiones y la generación procedimental de los vértices para las formas irregulares de los asteroides. Es completamente agnóstico a la interfaz gráfica.
+* **`view.js` (Vista - Renderizado):**
   Su única responsabilidad es renderizar el estado actual del juego. Utiliza la API de `CanvasRenderingContext2D` para dibujar los polígonos, limpiar los fotogramas y actualizar la interfaz de usuario (Score y Game Over) basándose en los datos proporcionados por el Modelo.
-* **`controller.js` (Controlador):**
+* **`controller.js` (Controlador - Entradas):**
   Actúa como intermediario gestionando los eventos de entrada del usuario (`keydown`, `keyup`). Captura las interacciones con el teclado y ejecuta las funciones de mutación de estado correspondientes en el Modelo.
 * **`main.js` (Core Loop):**
   Archivo de orquestación principal. Importa los módulos, inicializa los componentes y ejecuta el `gameLoop` a 60 FPS mediante `requestAnimationFrame()`, sincronizando la actualización de físicas y el renderizado visual.
@@ -40,3 +44,4 @@ Para ejecutar el juego en un entorno de desarrollo local:
 * **Flecha Arriba:** Acelerar (Thrust).
 * **Barra Espaciadora:** Disparar.
 * **Enter:** Reiniciar partida (en pantalla de Game Over).
+## OJALA TODO EL QUE JUEGUE SE DIVIERTA CON EL JUEGO
