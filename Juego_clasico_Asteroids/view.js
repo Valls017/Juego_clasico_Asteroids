@@ -8,24 +8,28 @@ export function render(state) {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    
     if (!state.gameOver) {
-        ctx.strokeStyle = "white";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(
-            state.ship.x + state.ship.radius * Math.cos(state.ship.angle),
-            state.ship.y - state.ship.radius * Math.sin(state.ship.angle)
-        );
-        ctx.lineTo(
-            state.ship.x - state.ship.radius * (Math.cos(state.ship.angle) + Math.sin(state.ship.angle)),
-            state.ship.y + state.ship.radius * (Math.sin(state.ship.angle) - Math.cos(state.ship.angle))
-        );
-        ctx.lineTo(
-            state.ship.x - state.ship.radius * (Math.cos(state.ship.angle) - Math.sin(state.ship.angle)),
-            state.ship.y + state.ship.radius * (Math.sin(state.ship.angle) + Math.cos(state.ship.angle))
-        );
-        ctx.closePath();
-        ctx.stroke();
+        // Solo dibuja la nave si no es invulnerable, o si está en un ciclo de parpadeo
+        if (state.ship.invulnerable === 0 || state.ship.invulnerable % 10 < 5) {
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(
+                state.ship.x + state.ship.radius * Math.cos(state.ship.angle),
+                state.ship.y - state.ship.radius * Math.sin(state.ship.angle)
+            );
+            ctx.lineTo(
+                state.ship.x - state.ship.radius * (Math.cos(state.ship.angle) + Math.sin(state.ship.angle)),
+                state.ship.y + state.ship.radius * (Math.sin(state.ship.angle) - Math.cos(state.ship.angle))
+            );
+            ctx.lineTo(
+                state.ship.x - state.ship.radius * (Math.cos(state.ship.angle) - Math.sin(state.ship.angle)),
+                state.ship.y + state.ship.radius * (Math.sin(state.ship.angle) + Math.cos(state.ship.angle))
+            );
+            ctx.closePath();
+            ctx.stroke();
+        }
     }
 
     for (let b of state.bullets) {
@@ -49,9 +53,11 @@ export function render(state) {
         ctx.stroke();
     }
 
+    // UI - SCORE Y VIDAS
     ctx.fillStyle = "white";
     ctx.font = "20px Courier New";
     ctx.fillText("SCORE: " + state.score, 20, 30);
+    ctx.fillText("VIDAS: " + state.lives, 20, 60); // <-- MOSTRAMOS LAS VIDAS
 
     if (state.gameOver) {
         ctx.font = "40px Courier New";

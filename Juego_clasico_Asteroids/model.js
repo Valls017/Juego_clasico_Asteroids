@@ -1,10 +1,12 @@
 export const state = {
     canvasWidth: 800,
     canvasHeight: 600,
-    ship: { x: 400, y: 300, radius: 15, angle: Math.PI / 2, velX: 0, velY: 0 },
+    // Añadimos 'invulnerable' a la nave
+    ship: { x: 400, y: 300, radius: 15, angle: Math.PI / 2, velX: 0, velY: 0, invulnerable: 0 },
     bullets: [],
     asteroids: [],
     score: 0,
+    lives: 3, // <-- NUESTRO CONTADOR DE VIDAS
     gameOver: false
 };
 
@@ -55,15 +57,19 @@ export function createAsteroids() {
 }
 
 export function resetGame() {
-    state.ship = { x: state.canvasWidth / 2, y: state.canvasHeight / 2, radius: 15, angle: Math.PI / 2, velX: 0, velY: 0 };
+    state.ship = { x: state.canvasWidth / 2, y: state.canvasHeight / 2, radius: 15, angle: Math.PI / 2, velX: 0, velY: 0, invulnerable: 0 };
     state.bullets = [];
     state.score = 0;
+    state.lives = 3; // <-- REINICIAMOS LAS VIDAS A 3
     state.gameOver = false;
     createAsteroids();
 }
 
 export function updatePhysics(keys) {
     if (state.gameOver) return;
+
+    
+    if (state.ship.invulnerable > 0) state.ship.invulnerable--;
 
     if (keys["ArrowLeft"]) state.ship.angle += turnSpeed;
     if (keys["ArrowRight"]) state.ship.angle -= turnSpeed;
@@ -135,11 +141,26 @@ export function updatePhysics(keys) {
         }
     }
 
-    for (let a of state.asteroids) {
-        let dx = state.ship.x - a.x;
-        let dy = state.ship.y - a.y;
-        if (Math.sqrt(dx * dx + dy * dy) < state.ship.radius + a.radioBase * 0.8) {
-            state.gameOver = true;
+    if (state.ship.invulnerable === 0) {
+        for (let a of state.asteroids) {
+            let dx = state.ship.x - a.x;
+            let dy = state.ship.y - a.y;
+            if (Math.sqrt(dx * dx + dy * dy) < state.ship.radius + a.radioBase * 0.8) {
+                state.lives--; // Restar vida
+                
+                if (state.lives <= 0) {
+                    state.gameOver = true; // Si llegas a 0, Game Over
+                } else {
+                    // Si quedan vidas, reaparecer en el centro y ser invulnerable por 2 segundos (120 frames)
+                    state.ship.x = state.canvasWidth / 2;
+                    state.ship.y = state.canvasHeight / 2;
+                    state.ship.velX = 0;
+                    state.ship.velY = 0;
+                    state.ship.angle = Math.PI / 2;
+                    state.ship.invulnerable = 120; 
+                }
+                break;
+            }
         }
     }
 }
