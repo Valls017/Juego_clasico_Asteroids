@@ -7,7 +7,7 @@ function gameLoop() {
     render(state);
     requestAnimationFrame(gameLoop);
 }
-
 initController();
 createAsteroids();
+console.log("M.V.C cargado correctamente");
 gameLoop();
