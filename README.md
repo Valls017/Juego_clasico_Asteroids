@@ -15,7 +15,7 @@ Así es como dividí el trabajo para que cada archivo tenga una sola tarea:
 * **`model.js` (El Cerebro)**: Aquí viven los datos. Se encarga de toda la matemática: calcular las físicas, la inercia, mover la nave con trigonometría y detectar si chocaste. No dibuja nada, solo hace cálculos.
 * **`view.js` (El Pintor)**: Hace lo contrario. Agarra los datos del modelo y los dibuja en el Canvas. Se encarga de trazar las líneas blancas, actualizar el puntaje y mostrar la pantalla de Game Over.
 * **`controller.js` (Los Controles)**: Solo escucha el teclado (las flechas y el espacio) y le avisa al modelo qué tiene que actualizar.
-* **`main.js` (El Motor)**: Es el que une las tres piezas anteriores. Corre el bucle principal a 60 FPS para que el juego se mueva fluido.
+* **`main.js` (El Motor)**: Es el que une las tres piezas anteriores. Corre el bucle principal 
 
 ## Detalles Técnicos Interesantes
 
