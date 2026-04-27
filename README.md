@@ -1,47 +1,41 @@
-# Juego de asteroides - Proyecto de Programación Web  
+# Juego de Asteroids - Proyecto de Programación Web
 
-Este proyecto es una recreación del clásico juego *Asteroids*, desarrollado completamente del lado del cliente (en el navegador) usando HTML5, CSS y JavaScript con la API de Canvas.
+Este es mi proyecto de recreación del clásico juego arcade *Asteroids*. Está hecho 100% con HTML5, CSS y JavaScript puro (usando la API de Canvas), sin necesidad de usar servidores externos.
 
 ---
 
-## Arquitectura del Proyecto
+## ¿Cómo está armado el código? (Arquitectura MVC)
 
-Para garantizar un código escalable, mantenible y limpio, el motor del juego fue refactorizado utilizando el patrón de diseño **Modelo-Vista-Controlador (MVC)** e implementado mediante **ES6 Modules**.
+Para evitar un código espagueti gigante y mantener las cosas simples y bien estructuradas, decidí refactorizar todo el juego usando el patrón **Modelo-Vista-Controlador (MVC)** con **Módulos de ES6**. 
 
-La estructura del proyecto se divide en los siguientes archivos y responsabilidades:
+Así es como dividí el trabajo para que cada archivo tenga una sola tarea:
 
-* **`index.html` (Estructura Base):**
-  Es el punto de entrada de la aplicación. Contiene únicamente la etiqueta `<canvas>` que sirve como pantalla del juego y el enlace crucial al motor principal mediante `<script type="module" src="main.js"></script>`, permitiendo el uso de la arquitectura de módulos.
-* **`style.css` (Presentación del Entorno):**
-  Se encarga exclusivamente del diseño del contenedor (el navegador). Utiliza *Flexbox* para centrar el lienzo del juego en la pantalla, establece el fondo espacial (negro) y define los bordes del área de juego, sin interferir con el renderizado dinámico interno del Canvas.
-* **`model.js` (Modelo - Lógica de Negocio):**
-  Encapsula el estado global del juego (`state`). Se encarga de calcular las físicas (inercia, vectores de velocidad), la trigonometría del movimiento, la detección de colisiones y la generación procedimental de los vértices para las formas irregulares de los asteroides. Es completamente agnóstico a la interfaz gráfica.
-* **`view.js` (Vista - Renderizado):**
-  Su única responsabilidad es renderizar el estado actual del juego. Utiliza la API de `CanvasRenderingContext2D` para dibujar los polígonos, limpiar los fotogramas y actualizar la interfaz de usuario (Score y Game Over) basándose en los datos proporcionados por el Modelo.
-* **`controller.js` (Controlador - Entradas):**
-  Actúa como intermediario gestionando los eventos de entrada del usuario (`keydown`, `keyup`). Captura las interacciones con el teclado y ejecuta las funciones de mutación de estado correspondientes en el Modelo.
-* **`main.js` (Core Loop):**
-  Archivo de orquestación principal. Importa los módulos, inicializa los componentes y ejecuta el `gameLoop` a 60 FPS mediante `requestAnimationFrame()`, sincronizando la actualización de físicas y el renderizado visual.
+* **`index.html`**: Súper limpio. Solo tiene el `<canvas>` donde se dibuja el juego y llama a `main.js` usando `type="module"`.
+* **`style.css`**: Lo básico para la presentación. Usa Flexbox para centrar la pantalla del juego en medio del monitor y le pone el fondo negro espacial.
+* **`model.js` (El Cerebro)**: Aquí viven los datos. Se encarga de toda la matemática: calcular las físicas, la inercia, mover la nave con trigonometría y detectar si chocaste. No dibuja nada, solo hace cálculos.
+* **`view.js` (El Pintor)**: Hace lo contrario. Agarra los datos del modelo y los dibuja en el Canvas. Se encarga de trazar las líneas blancas, actualizar el puntaje y mostrar la pantalla de Game Over.
+* **`controller.js` (Los Controles)**: Solo escucha el teclado (las flechas y el espacio) y le avisa al modelo qué tiene que actualizar.
+* **`main.js` (El Motor)**: Es el que une las tres piezas anteriores. Corre el bucle principal a 60 FPS para que el juego se mueva fluido.
 
-## Características Técnicas Destacadas
+## Detalles Técnicos Interesantes
 
-* **Renderizado Optimizado:** Uso de Canvas en lugar de manipulación directa del DOM o animaciones CSS, logrando un rendimiento fluido de 60 FPS al manejar docenas de entidades simultáneas.
-* **Generación Procedimental:** Los asteroides no son imágenes estáticas ni círculos perfectos. Sus vértices se calculan dinámicamente mediante coordenadas polares y factores de aleatoriedad para crear polígonos irregulares únicos.
-* **Hitboxes Eficientes:** Para optimizar los cálculos de la CPU, la detección de colisiones utiliza un sistema de *hitboxes* circulares (mediante el Teorema de Pitágoras) aunque el renderizado visual sea poligonal complejo.
-* **Físicas Arcade:** Implementación de inercia y fricción para simular el desplazamiento en el vacío del espacio, junto con el clásico efecto de "Screen Wrapping" (reaparecer por el borde opuesto).
+* **Asteroides únicos:** No uso imágenes estáticas. Los asteroides se dibujan calculando puntos aleatorios alrededor de un círculo base, por eso ninguno sale con la misma forma geométrica.
+* **Colisiones optimizadas:** Para que el juego no se ponga lento calculando si tocaste una esquina rara de un asteroide, uso un "hitbox" circular invisible. Calculo la distancia entre los centros usando el Teorema de Pitágoras; es mucho más rápido y rinde mejor.
+* **Física clásica:** Le puse inercia y fricción a la nave para que resbale como en el espacio real, y si sales por un borde de la pantalla, apareces por el lado opuesto.
 
-## Instrucciones de Ejecución
+## ¿Cómo probarlo?
 
-Debido a la implementación estricta de ES6 Modules (`import`/`export`), este proyecto **no puede ejecutarse simplemente abriendo el archivo HTML** en el navegador por restricciones de seguridad (CORS). 
+Como dividí el código en varios archivos usando módulos modernos de JavaScript (`import/export`), los navegadores bloquean el juego si solo le das doble clic al archivo HTML (por temas de seguridad de CORS). 
 
-Para ejecutar el juego en un entorno de desarrollo local:
-1. Abrir el proyecto en un editor de código como Visual Studio Code.
-2. Iniciar un servidor local (por ejemplo, utilizando la extensión **Live Server**).
-3. Acceder a la URL local generada (usualmente `http://127.0.0.1:5500/index.html`).
+Para jugarlo sin problemas:
+1. Abre la carpeta del proyecto en Visual Studio Code.
+2. Arranca un servidor local (yo recomiendo usar la extensión **Live Server**).
+3. Abre la dirección que te genera (casi siempre es `http://127.0.0.1:5500/index.html`) en tu navegador.
 
 ## Controles
-* **Flecha Izquierda / Derecha:** Rotar la nave.
-* **Flecha Arriba:** Acelerar (Thrust).
+* **Flechas Izquierda / Derecha:** Girar la nave.
+* **Flecha Arriba:** Acelerar.
 * **Barra Espaciadora:** Disparar.
-* **Enter:** Reiniciar partida (en pantalla de Game Over).
-## OJALA TODO EL QUE JUEGUE SE DIVIERTA CON EL JUEGO
+* **Enter:** Reiniciar cuando pierdes.
+
+**¡Ojalá todo el que lo pruebe se divierta un buen rato con el juego!**
