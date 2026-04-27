@@ -5,16 +5,16 @@ canvas.width = 800;
 canvas.height = 600;
 
 export function render(state) {
+
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    
     if (!state.gameOver) {
-        
         if (state.ship.invulnerable === 0 || state.ship.invulnerable % 10 < 5) {
             ctx.strokeStyle = "white";
             ctx.lineWidth = 2;
             ctx.beginPath();
+            
             ctx.moveTo(
                 state.ship.x + state.ship.radius * Math.cos(state.ship.angle),
                 state.ship.y - state.ship.radius * Math.sin(state.ship.angle)
@@ -31,14 +31,12 @@ export function render(state) {
             ctx.stroke();
         }
     }
-
-    for (let b of state.bullets) {
+  for (let b of state.bullets) {
         ctx.fillStyle = "white";
         ctx.beginPath();
         ctx.arc(b.x, b.y, 2, 0, Math.PI * 2);
         ctx.fill();
     }
-
     ctx.strokeStyle = "white";
     ctx.lineWidth = 2;
     for (let a of state.asteroids) {
@@ -52,13 +50,11 @@ export function render(state) {
         ctx.closePath();
         ctx.stroke();
     }
-
-    
     ctx.fillStyle = "white";
     ctx.font = "20px Courier New";
     ctx.fillText("SCORE: " + state.score, 20, 30);
     ctx.fillText("VIDAS: " + state.lives, 20, 60); 
-
+    
     if (state.gameOver) {
         ctx.font = "40px Courier New";
         ctx.textAlign = "center";
